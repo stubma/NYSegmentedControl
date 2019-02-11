@@ -3,11 +3,20 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class NYSegmentedControl;
+@class NYSegment;
 
 @protocol NYSegmentedControlDataSource <NSObject>
 
 - (NSUInteger)numberOfSegments:(NYSegmentedControl *)control;
 - (NSString *)segmentedControl:(NYSegmentedControl *)control titleForSegmentAtIndex:(NSUInteger)index;
+
+@end
+
+@protocol NYSegmentedControlDelegate
+
+@optional
+
+- (CGRect)segmentedControl:(NYSegmentedControl*)segmentedControl indicatorFrameForSegment:(NYSegment *)segment;
 
 @end
 
@@ -17,6 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
  The segmented control's data source object.
  */
 @property (nonatomic, weak, nullable) IBOutlet id <NYSegmentedControlDataSource> dataSource;
+
+/**
+ The delegate for segmented control
+ */
+@property (nonatomic, weak, nullable) id<NYSegmentedControlDelegate> delegate;
 
 /**
  If YES, selectedTitleFont and selectedTitleTextColor are used for the selected segment's title label. The default value is YES.
