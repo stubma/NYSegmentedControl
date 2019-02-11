@@ -24,8 +24,12 @@
 - (void)drawRect:(CGRect)rect {
     if (self.drawsGradientBackground) {
         CAGradientLayer *gradientLayer = (CAGradientLayer *)self.layer;
-        gradientLayer.colors = @[(__bridge id)[self.gradientTopColor CGColor],
-                                 (__bridge id)[self.gradientBottomColor CGColor]];
+		gradientLayer.colors = @[(__bridge id)[self.gradientTopColor CGColor],
+								 (__bridge id)[self.gradientBottomColor CGColor]];
+		if(self.drawsGradientHorizontally) {
+			gradientLayer.startPoint = CGPointMake(0, 0.5f);
+			gradientLayer.endPoint = CGPointMake(1, 0.5f);
+		}
     } else {
         self.layer.backgroundColor = [self.backgroundColor CGColor];
     }
@@ -61,6 +65,11 @@
 - (void)setDrawsGradientBackground:(BOOL)drawsGradientBackground {
     _drawsGradientBackground = drawsGradientBackground;
     [self setNeedsDisplay];
+}
+
+- (void)setDrawsGradientHorizontally:(BOOL)drawsGradientHorizontally {
+	_drawsGradientHorizontally = drawsGradientHorizontally;
+	[self setNeedsDisplay];
 }
 
 - (void)setGradientTopColor:(UIColor *)gradientTopColor {

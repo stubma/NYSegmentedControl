@@ -8,6 +8,7 @@
 @property (nonatomic) UIColor *borderColor;
 
 @property (nonatomic) BOOL drawsGradientBackground;
+@property (nonatomic) BOOL drawsGradientHorizontally;
 @property (nonatomic) UIColor *gradientTopColor;
 @property (nonatomic) UIColor *gradientBottomColor;
 

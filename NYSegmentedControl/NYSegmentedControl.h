@@ -7,6 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol NYSegmentedControlDataSource <NSObject>
 
+@optional
+
 - (NSUInteger)numberOfSegments:(NYSegmentedControl *)control;
 - (NSString *)segmentedControl:(NYSegmentedControl *)control titleForSegmentAtIndex:(NSUInteger)index;
 
@@ -111,6 +113,11 @@ NS_ASSUME_NONNULL_BEGIN
  @see segmentIndicatorGradientBottomColor
  */
 @property (nonatomic) BOOL drawsSegmentIndicatorGradientBackground;
+
+/**
+ if yes, the control's background will be drawn with a horizontal gradient color
+ */
+@property (nonatomic) BOOL drawsSegmentIndicatorGradientHorizontally;
 
 /**
  The color of the selected segment indicator.
@@ -226,6 +233,11 @@ NS_ASSUME_NONNULL_BEGIN
  @return The title of the specified segment.
  */
 - (NSString *)titleForSegmentAtIndex:(NSUInteger)index;
+
+/**
+ index of segment
+ */
+- (NSInteger)indexOfSegment:(NYSegment*)seg;
 
 /**
  Sets the selected segment index.

@@ -101,7 +101,9 @@
 }
 
 - (void)reloadData {
-	if (self.dataSource) {
+	if (self.dataSource &&
+		[(id)self.dataSource respondsToSelector:@selector(numberOfSegments:)] &&
+		[(id)self.dataSource respondsToSelector:@selector(segmentedControl:titleForSegmentAtIndex:)]) {
 		for (NYSegment *segment in self.segments) {
 			[segment removeFromSuperview];
 		}
@@ -238,6 +240,10 @@
 - (NSString *)titleForSegmentAtIndex:(NSUInteger)index {
 	NYSegment *segment = self.segments[index];
 	return segment.titleLabel.text;
+}
+
+- (NSInteger)indexOfSegment:(NYSegment*)seg {
+	return [self.segments indexOfObject:seg];
 }
 
 - (void)moveSelectedSegmentIndicatorToSegmentAtIndex:(NSUInteger)index animated:(BOOL)animated {
@@ -427,6 +433,14 @@
 	return self.selectedSegmentIndicator.drawsGradientBackground;
 }
 
+- (void)setDrawsSegmentIndicatorGradientHorizontally:(BOOL)drawsSegmentIndicatorGradientHorizontally {
+	self.selectedSegmentIndicator.drawsGradientHorizontally = drawsSegmentIndicatorGradientHorizontally;
+}
+
+- (BOOL)drawsSegmentIndicatorGradientHorizontally {
+	return self.selectedSegmentIndicator.drawsGradientHorizontally;
+}
+
 - (void)setBounds:(CGRect)bounds {
 	[super setBounds:bounds];
 	self.selectedSegmentIndicator.cornerRadius = self.cornerRadius * ((self.frame.size.height - self.segmentIndicatorInset * 2) / self.frame.size.height);
@@ -485,6 +499,9 @@
 
 - (void)setTitleFont:(UIFont *)titleFont {
 	_titleFont = titleFont;
+	[self.segments enumerateObjectsUsingBlock:^(NYSegment * _Nonnull seg, NSUInteger idx, BOOL * _Nonnull stop) {
+		seg.titleLabel.font = titleFont;
+	}];
 	[self setNeedsLayout];
 }
 
@@ -495,6 +512,9 @@
 
 - (void)setSelectedTitleFont:(UIFont *)selectedTitleFont {
 	_selectedTitleFont = selectedTitleFont;
+	[self.segments enumerateObjectsUsingBlock:^(NYSegment * _Nonnull seg, NSUInteger idx, BOOL * _Nonnull stop) {
+		seg.titleLabel.selectedFont = selectedTitleFont;
+	}];
 	[self setNeedsLayout];
 }
 
